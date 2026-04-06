@@ -927,3 +927,28 @@ INSERT INTO pago VALUES (28,'PayPal','ak-std-000022','2009-01-13',8489);
 INSERT INTO pago VALUES (30,'PayPal','ak-std-000024','2009-01-16',7863);
 INSERT INTO pago VALUES (35,'PayPal','ak-std-000025','2007-10-06',3321);
 INSERT INTO pago VALUES (38,'PayPal','ak-std-000026','2006-05-26',1171);
+
+
+select '01' codig, 'Bruno Diaz' empleado from dual
+union
+select '02' codig, 'Clark Kent' empleado from dual
+
+
+SELECT SUM(TABLA2.TOTAL_REGISTROS) SUMA_REGISTROS,
+GROUP_CONCAT(TABLA2.CIUDAD ORDER BY TABLA2.CIUDAD SEPARATOR ';') LISTA_CIUDAD
+FROM(SELECT tabla.ciudad, CAST(tabla.total_registros as signed) TOTAL_REGISTROS	
+	FROM (select cl.ciudad, count(*) total_registros 
+		from cliente cl, empleado em 
+		where em.codigo_empleado = cl.codigo_empleado_rep_ventas
+        and em.codigo_empleado in (11, 30)
+		group by cl.ciudad) tabla
+	union
+	SELECT('Barcelona') ciudad, (10) total_registros from dual) TABLA2;
+
+
+select cl.ciudad , count(cl.ciudad) total_registros,
+LPAD(count(cl.ciudad),6,'0') total_registros2, RPAD(count(cl.ciudad),6,'0') total_registros3
+from cliente cl, empleado em
+where em.codigo_empleado = cl.codigo_empleado_rep_ventas
+and em.codigo_empleado in (11,30)
+group by cl.ciudad
